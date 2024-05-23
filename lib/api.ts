@@ -12,6 +12,7 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
   const res = await fetch(API_URL, {
     headers,
     method: "POST",
+    
     body: JSON.stringify({
       query,
       variables,
@@ -20,7 +21,7 @@ async function fetchAPI(query = "", { variables }: Record<string, any> = {}) {
 
   const json = await res.json();
   if (json.errors) {
-    console.error(json.errors);
+    console.error("Error details:", json.errors);
     throw new Error("Failed to fetch API");
   }
   return json.data;
@@ -210,12 +211,10 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   return data;
 }
 
-
-
 export async function getAllApartments(preview: boolean) {
   const data = await fetchAPI(
     `
-    query AllApartments {
+    query AllApartaments {
       apartamenty {
         edges {
           node {
@@ -226,7 +225,11 @@ export async function getAllApartments(preview: boolean) {
                   uri
                 }
               }
-            }
+              krotkiOpis
+              liczbaOsob
+              metraz
+              
+            }slug
           }
         }
       }
@@ -244,3 +247,51 @@ export async function getAllApartments(preview: boolean) {
 }
 
 
+export async function getAllApartmentsWithSlug() {
+  const data = await fetchAPI(`
+    {
+      apartamenty {
+        edges {
+          node {
+            slug
+          }
+        }
+      }
+    }
+  `);
+  return data?.apartamenty;
+}
+
+export async function getApartmentBySlug(slug) {
+  const data = await fetchAPI(
+    `
+    query ApartmentBySlug($slug: String!) {
+      apartamenty(where: {name: $slug}) {
+        edges {
+          node {
+            apartamentyFields {
+              nazwa
+              miniaturka {
+                node {
+                  uri
+                }
+              }
+              krotkiOpis
+              liczbaOsob
+              metraz
+            }
+            slug
+          }
+        }
+      }
+    }
+    `,
+    {
+      variables: {
+        slug,
+      },
+    }
+  );
+
+  return data?.apartamenty?.edges[0]?.node || null;
+}
