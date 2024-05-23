@@ -209,3 +209,38 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
 
   return data;
 }
+
+
+
+export async function getAllApartments(preview: boolean) {
+  const data = await fetchAPI(
+    `
+    query AllApartments {
+      apartamenty {
+        edges {
+          node {
+            apartamentyFields {
+              nazwa
+              miniaturka {
+                node {
+                  uri
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview,
+      },
+    },
+  );
+
+  return data?.apartamenty;
+}
+
+
