@@ -12,17 +12,17 @@ import Image from "next/image";
 
 export default function Atrakcje({ allAttractions: { edges }, preview }) {
   // Map edges to create a new attractions array
-  const attractions = edges.map(({ node }) => {
-    const { atrakcjeFields } = node || {};
-    const { nazwa } = atrakcjeFields || {};
-    const { opis } = atrakcjeFields || {};
+  // const attractions = edges.map(({ node }) => {
+  //   const { atrakcjeFields } = node || {};
+  //   const { nazwa } = atrakcjeFields || {};
+  //   const { opis } = atrakcjeFields || {};
 
-    return {
-      title: nazwa,
-      description: opis,
-      link: "#",
-    };
-  });
+  //   return {
+  //     title: nazwa,
+  //     description: opis,
+  //     link: "#",
+  //   };
+  // });
 
   return (
     <Layout preview={preview}>
@@ -58,7 +58,7 @@ export default function Atrakcje({ allAttractions: { edges }, preview }) {
               </div>
             );
           })}
-            
+          
         </div>
       </Container>
     </Layout>

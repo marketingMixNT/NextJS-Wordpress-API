@@ -1,39 +1,48 @@
 import Head from "next/head";
 import { GetStaticProps } from "next";
 import Container from "../components/container";
-import MoreStories from "../components/more-stories";
-import HeroPost from "../components/hero-post";
-import Intro from "../components/intro";
 import Layout from "../components/layout";
-import { getAllPostsForHome } from "../lib/api";
+import { getAllHeroSlides } from "../lib/api";
 import { CMS_NAME } from "../lib/constants";
-import Link from "next/link";
 
-export default function Index({ allPosts: { edges }, preview }) {
-  const heroPost = edges[0]?.node;
-  const morePosts = edges.slice(1);
+export default function Index({ allSlides, preview }) {
+  const edges = allSlides?.edges || [];
 
   return (
     <Layout preview={preview}>
       <Head>
-        <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
+        <title>{`Strona Hotelowa z CMS ${CMS_NAME}`}</title>
       </Head>
-      <Container>
-      
-       <h1>home</h1>
-      </Container>
+
+        {edges.map(({ node }, index) => {
+          const { fieldsImg } = node || {};
+          const { zdjecie } = fieldsImg || {};
+          const imgUri = "https://nextjscms.mmhub.pl" + zdjecie?.node?.uri;
+
+          return (
+            <header className="h-screen w-full bg-no-repeat bg-cover bg-center flex overflow-hidden bg-blend-multiply bg-gray-300" style={{
+              backgroundImage: `url('${imgUri}')`,
+            }}>
+
+            
+      </header>
+          );
+        })}
+      {/* <Container>
+        <p>test</p>
+      </Container> */}
+      <main>
+        
+      </main>
     </Layout>
   );
 }
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const allPosts = await getAllPostsForHome(preview);
-
-  
-
+  const allSlides = await getAllHeroSlides(preview);
 
   return {
-    props: { allPosts, preview },
+    props: { allSlides, preview },
     revalidate: 10,
   };
 };

@@ -360,3 +360,39 @@ export async function getAllAttractions(preview) {
 
   return data?.atrakcje;
 }
+
+
+
+
+
+
+
+export async function getAllHeroSlides(preview) {
+  const data = await fetchAPI(
+    `
+    query AllHeroImg {
+      heroSliderImages {
+        edges {
+          node {
+            fieldsImg {
+              zdjecie {
+                node {
+                  uri
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview,
+      },
+    },
+  );
+
+  return data?.heroSliderImages;
+}

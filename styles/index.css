@@ -14,6 +14,16 @@
 
 /* Your own custom utilities */
 
+
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body{
+  @apply bg-primary;
+  font-family: "Italiana", sans-serif;
+  font-weight: 200
+}
+
+
 .has-text-align-left {
   @apply text-left;
 }
