@@ -276,11 +276,36 @@ export async function getApartmentBySlug(slug) {
                   uri
                 }
               }
+              galeria {
+                node {
+                  uri
+                }
+              }
+              krotkiOpis
+              liczbaOsob
+              metraz
+              cena
+              opis
+            }
+            slug
+          }
+        }
+      }
+      allApartamenty: apartamenty {
+        edges {
+          node {
+            slug
+            apartamentyFields {
+              nazwa
+              miniaturka {
+                node {
+                  uri
+                }
+              }
               krotkiOpis
               liczbaOsob
               metraz
             }
-            slug
           }
         }
       }
@@ -293,5 +318,45 @@ export async function getApartmentBySlug(slug) {
     }
   );
 
-  return data?.apartamenty?.edges[0]?.node || null;
+  const apartment = data?.apartamenty?.edges[0]?.node || null;
+  const allApartments = data?.allApartamenty?.edges.map(edge => edge.node) || [];
+
+  return {
+    apartment,
+    allApartments
+  };
+}
+
+
+export async function getAllAttractions(preview) {
+  const data = await fetchAPI(
+    `
+    query AllAttractions {
+      atrakcje {
+        edges {
+          node {
+            atrakcjeFields {
+              nazwa
+              miniaturka {
+                node {
+                  uri
+                }
+              }
+              opis
+            }
+            slug
+          }
+        }
+      }
+    }
+    `,
+    {
+      variables: {
+        onlyEnabled: !preview,
+        preview,
+      },
+    },
+  );
+
+  return data?.atrakcje;
 }

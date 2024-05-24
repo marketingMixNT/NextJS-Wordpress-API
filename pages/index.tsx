@@ -19,22 +19,8 @@ export default function Index({ allPosts: { edges }, preview }) {
         <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
       </Head>
       <Container>
-        <nav className="flex gap-4">
-          <Link href={'/'}>Home</Link>
-          <Link href={'/apartamenty'}>Apartamenty</Link>
-        </nav>
-        <Intro />
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.featuredImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      
+       <h1>home</h1>
       </Container>
     </Layout>
   );
