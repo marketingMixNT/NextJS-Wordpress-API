@@ -4,6 +4,7 @@ import Container from "../components/container";
 import Layout from "../components/layout";
 import { getAllHeroSlides } from "../lib/api";
 import { CMS_NAME } from "../lib/constants";
+import Slider from '../components/Slider'
 
 export default function Index({ allSlides, preview }) {
   const edges = allSlides?.edges || [];
@@ -20,12 +21,16 @@ export default function Index({ allSlides, preview }) {
           const imgUri = "https://nextjscms.mmhub.pl" + zdjecie?.node?.uri;
 
           return (
-            <header className="h-screen w-full bg-no-repeat bg-cover bg-center flex overflow-hidden bg-blend-multiply bg-gray-300" style={{
-              backgroundImage: `url('${imgUri}')`,
-            }}>
+      //       <header className="h-screen w-full bg-no-repeat bg-cover bg-center flex overflow-hidden bg-blend-multiply bg-gray-300" style={{
+      //         backgroundImage: `url('${imgUri}')`,
+      //       }}>
 
             
-      </header>
+      // </header>
+      <>
+      <p>test</p>
+      <Slider/>
+      </>
           );
         })}
       {/* <Container>

@@ -112,3 +112,22 @@ body{
 .wp-block-media-text {
   @apply grid grid-cols-2 gap-4;
 }
+
+
+
+
+
+
+/* slider */
+
+.fade-anim img{
+  animation: fadeAnim .5s ease-out;
+}
+
+@keyframes fadeAnim{
+  from{
+    opacity: 0;
+  }to{
+    opacity: 1;
+  }
+}
