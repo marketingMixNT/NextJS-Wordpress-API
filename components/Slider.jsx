@@ -1,54 +1,68 @@
-import React, { useEffect, useState,useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
+import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 
-const featuredProducts = ['/1.jpeg', '/2.jpeg', '/3.jpeg']
+function Slider({ imgUris }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const slideRef = useRef();
+  const slideInterval = useRef();
 
-function Slider() {
-	let count = 0
-	const [currentIndex, setCurrentIndex] = useState(0)
+  const removeAnimation = () => {
+    slideRef.current.classList.remove('fade-anim');
+  };
 
-    const slideRef = useRef()
+  useEffect(() => {
+    slideRef.current.addEventListener('animationend', removeAnimation);
+    slideRef.current.addEventListener('mouseenter', pauseSlider);
+    slideRef.current.addEventListener('mouseleave', startSlider);
+    startSlider();
+    return () => {
+      pauseSlider();
+    };
+  }, []);
 
-	const removeAnimation = () =>{
-		slideRef.current.classList.remove('fade-anim')
+  const startSlider = () => {
+    slideInterval.current = setInterval(() => {
+      handleOnNextClick();
+    }, 5000);
+  };
 
-	}
+  const pauseSlider = () => {
+    clearInterval(slideInterval.current);
+  };
 
-    useEffect(()=>{
-		slideRef.current.addEventListener('animationed',removeAnimation)
-        // startSlider()
-    },[])
+  const handleOnNextClick = () => {
+    setCurrentIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % imgUris.length;
+      return newIndex;
+    });
+    slideRef.current.classList.add('fade-anim');
+  };
 
-    const startSlider = () => {
-        setInterval(() => {
-            handleOnNextClick()
-        },3000)
-    }
+  const handleOnPrevClick = () => {
+    setCurrentIndex((prevIndex) => {
+      const imgUrisLength = imgUris.length;
+      const newIndex = (prevIndex + imgUrisLength - 1) % imgUrisLength;
+      return newIndex;
+    });
+    slideRef.current.classList.add('fade-anim');
+  };
 
-	const handleOnNextClick = () => {
-		count = (count + 1) % featuredProducts.length
-		setCurrentIndex(count)
-        slideRef.current.classList.add('fade-anim')
-	}
-	const handleOnPrevClick = () => {
-        const productLength = featuredProducts.length;
-        count = (currentIndex + productLength -1) % productLength
-        setCurrentIndex(count)
-    }
+  return (
+    <div ref={slideRef} className='w-full select-none relative h-[92vh]'>
+      <div className='h-full w-full'>
+        <img src={imgUris[currentIndex]} alt={`Slide ${currentIndex + 1}`} className='object-cover w-full h-full' />
+      </div>
 
-
-
-	return (
-		<div ref={slideRef} className='w-full select-none relative'>
-			<div className='aspect-w-16 aspect-h-9 '>
-				<img src={featuredProducts[currentIndex]} alt='' />
-			</div>
-
-			<div className='absolute top-1/2 transform w-full -translate-y-1/2 py-2 px-3 flex justify-between items-center'>
-				<button onClick={handleOnPrevClick}>Prev</button>
-				<button onClick={handleOnNextClick}>Next</button>
-			</div>
-		</div>
-	)
+      <div className='absolute top-1/2 transform w-full -translate-y-1/2 py-2 px-3 flex justify-between items-center'>
+        <button onClick={handleOnPrevClick} className='bg-transparent hover:bg-white rounded-full  duration-500'>
+          <MdNavigateBefore size={66} className='text-white hover:text-black' duration-500 />
+        </button>
+        <button onClick={handleOnNextClick} className='bg-transparent hover:bg-white  rounded-full  duration-500'>
+          <MdNavigateNext size={66} className='text-white hover:text-black duration-500' />
+        </button>
+      </div>
+    </div>
+  );
 }
 
-export default Slider
+export default Slider;
